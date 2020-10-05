@@ -68,11 +68,15 @@ for tile in tiles:
             mdict1 = {}
             for i in prePro:
                 mdict[prePro[i]['cloudcoverpercentage']] = i
-                mdict1[prePro[i]['cloudcoverpercentage']] = prePro[i]['cloudcoverpercentage']
 
-            uuid = mdict[min(mdict.keys())]
-            prod = prePro[uuid]
-            # api.download(uuid)
+            CldPrcSort = sorted(mdict.keys())
+            for mmin in CldPrcSort:
+                # mdict[CldPrcSort[0]]
+                uuid = mdict[mmin]
+                # prod = prePro[uuid]
+                if float(prePro[uuid]['size'][:-3]) > 400:
+                    api.download(uuid)
+                    break
 
             # CldPrc = []
             # CldPrcLess = []
