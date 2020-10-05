@@ -102,7 +102,7 @@ for tile in tiles:
 
 """ export for report"""
 data = {
-    "CloudSizesYear": CloudSizesYear,
+    "volume": CloudSizesYear,
     "CloudPrcYear": CloudPrcYear
 }
 
