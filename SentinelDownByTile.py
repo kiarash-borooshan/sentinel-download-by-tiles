@@ -65,18 +65,41 @@ for tile in tiles:
             """ detect less cloud tile for each month"""
 
             mdict = {}
-            mdict1 = {}
             for i in prePro:
                 mdict[prePro[i]['cloudcoverpercentage']] = i
 
-            CldPrcSort = sorted(mdict.keys())
-            for mmin in CldPrcSort:
-                # mdict[CldPrcSort[0]]
+            """ report """
+            CldPrcSortTmp = sorted(mdict.keys())
+            for mmin in CldPrcSortTmp:
                 uuid = mdict[mmin]
-                # prod = prePro[uuid]
-                if float(prePro[uuid]['size'][:-3]) > 400:
-                    api.download(uuid)
+                if float(prePro[uuid]["size"][:-3]) > 400:
+                    cloudLessSize += float(prePro[uuid]["size"][:-3])
+                    CloudSizesYear.append(float(prePro[uuid]["size"][:-3]))
+                    CloudPrcYear.append(prePro[uuid]['cloudcoverpercentage'])
                     break
+
+            CloudSizesYear.append(cloudLessSize)
+            CloudPrcYear.append("none")
+
+            """ export for report"""
+            data = {
+                "volume": CloudSizesYear,
+                "CloudPrcYear": CloudPrcYear
+            }
+
+            MyDF = pd.DataFrame(data)
+            # print(MyDF)
+            MyDF.to_csv("less cloud percent and volume .csv")
+
+            # """ download """
+            # CldPrcSort = sorted(mdict.keys())
+            # for mmin in CldPrcSort:
+            #     # mdict[CldPrcSort[0]]
+            #     uuid = mdict[mmin]
+            #     # prod = prePro[uuid]
+            #     if float(prePro[uuid]['size'][:-3]) > 400:
+            #         api.download(uuid)
+            #         break
 
             # CldPrc = []
             # CldPrcLess = []
@@ -114,8 +137,8 @@ for tile in tiles:
             #     else:
             #         c += 1
 
-# CloudSizesYear.apreProend(cloudLessSize)
-# CloudPrcYear.apreProend("none")
+# CloudSizesYear.append(cloudLessSize)
+# CloudPrcYear.append("none")
 #
 # """ export for report"""
 # data = {
