@@ -17,7 +17,7 @@ producttype = "S2MSI1C"
 # producttype = "S2MS2Ap"    # doesn't work
 # producttype = "S2MSI2A"    # doesn't work
 
-year_from = "2019"
+year_from = "2018"
 year_to = "2019"
 
 """ import tiles name """
@@ -43,7 +43,7 @@ for tile in tiles:
         print(year)
 
         for Month in range(1, 13):
-            print(Month)
+            # print(Month)
             daymax = '30'
             if Month in [2]:
                 daymax = '28'
@@ -53,62 +53,72 @@ for tile in tiles:
             query_kwargs = {
                 "platformname": "Sentinel-2",
                 "producttype": producttype,
-                "date": (year_from + str(Month).zfill(2) + str(1).zfill(2),
-                         year_to + str(Month).zfill(2) + str(daymax).zfill(2))
+                "date": (str(year) + str(Month).zfill(2) + str(1).zfill(2),
+                         str(year) + str(Month).zfill(2) + str(daymax).zfill(2))
             }
 
-            for til in tiles:
-                kw = query_kwargs.copy()
-                kw["tileid"] = til
-                pp = api.query(**kw)
+            # for til in tiles:
+            kw = query_kwargs.copy()
+            kw["tileid"] = tile
+            prePro = api.query(**kw)
 
-                """ detect less cloud tile for each month"""
-                CldPrc = []
-                # CldPrcLess = []
+            """ detect less cloud tile for each month"""
 
-                for i in pp:
-                    print("month {}".format(Month))
+            mdict = {}
+            mdict1 = {}
+            for i in prePro:
+                mdict[prePro[i]['cloudcoverpercentage']] = i
+                mdict1[prePro[i]['cloudcoverpercentage']] = prePro[i]['cloudcoverpercentage']
 
-                    print(pp[i]['cloudcoverpercentage'])
-                    print(pp[i]['size'])
-                    CldPrc.append(pp[i]['cloudcoverpercentage'])
+            uuid = mdict[min(mdict.keys())]
+            prod = prePro[uuid]
+            # api.download(uuid)
 
-                    MinCldIndx = CldPrc.index(min(CldPrc))
+            # CldPrc = []
+            # CldPrcLess = []
+            # for i in prePro:
+            #     print("month {}".format(Month))
+            #     print(prePro[i]['cloudcoverpercentage'])
+            #     print(prePro[i]['size'])
+            #
+            #     CldPrc.apreProend(prePro[i]['cloudcoverpercentage'])
+            #
+            # MinCldIndx = CldPrc.index(min(CldPrc))
+            #
+            # del i
+            # CloudPrcYear.apreProend(min(CldPrc))
+            #
+            # """ estimate less cloud size """
+            # c = 0
+            #
+            # for i in prePro:
+            #     if c == MinCldIndx:
+            #         cloudLessSize += float(prePro[i]['size'][:-3])
+            #         CloudSizesYear.apreProend(float(prePro[i]['size'][:-3]))
+            #         break
+            #     else:
+            #         c += 1
 
-                del i
-                CloudPrcYear.append(min(CldPrc))
+            """ download less cloud tile """
+            # c = 0
+            # for i in prePro:
+            #     if c == MinCldIndx:
+            #
+            #         """ download """
+            #         api.get_product_odata(i)
+            #         api.download(i)
+            #     else:
+            #         c += 1
 
-                """ estimate less cloud size """
-                c = 0
-
-                for i in pp:
-                    if c == MinCldIndx:
-                        cloudLessSize += float(pp[i]['size'][:-3])
-                        CloudSizesYear.append(float(pp[i]['size'][:-3]))
-                        break
-                    else:
-                        c += 1
-
-                """ download less cloud tile """
-                # c = 0
-                # for i in pp:
-                #     if c == MinCldIndx:
-                #
-                #         """ download """
-                #         api.get_product_odata(i)
-                #         api.download(i)
-                #     else:
-                #         c += 1
-
-CloudSizesYear.append(cloudLessSize)
-CloudPrcYear.append("none")
-
-""" export for report"""
-data = {
-    "volume": CloudSizesYear,
-    "CloudPrcYear": CloudPrcYear
-}
-
-MyDF = pd.DataFrame(data)
-# print(MyDF)
-MyDF.to_csv("less cloud percent and volume .csv")
+# CloudSizesYear.apreProend(cloudLessSize)
+# CloudPrcYear.apreProend("none")
+#
+# """ export for report"""
+# data = {
+#     "volume": CloudSizesYear,
+#     "CloudPrcYear": CloudPrcYear
+# }
+#
+# MyDF = pd.DataFrame(data)
+# # print(MyDF)
+# MyDF.to_csv("less cloud percent and volume .csv")
