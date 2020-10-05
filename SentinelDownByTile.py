@@ -53,8 +53,8 @@ for tile in tiles:
             query_kwargs = {
                 "platformname": "Sentinel-2",
                 "producttype": producttype,
-                "date": (year_from + str(Month).zfill(2) + str(1).zfill(2),
-                         year_to + str(Month).zfill(2) + str(daymax).zfill(2))
+                "date": (str(year) + str(Month).zfill(2) + str(1).zfill(2),
+                         str(year) + str(Month).zfill(2) + str(daymax).zfill(2))
             }
 
             for til in tiles:
