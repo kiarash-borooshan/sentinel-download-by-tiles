@@ -100,6 +100,9 @@ for tile in tiles:
                 #     else:
                 #         c += 1
 
+CloudSizesYear.append(cloudLessSize)
+CloudPrcYear.append("none")
+
 """ export for report"""
 data = {
     "volume": CloudSizesYear,
