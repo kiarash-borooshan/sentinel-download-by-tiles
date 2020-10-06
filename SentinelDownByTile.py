@@ -25,7 +25,7 @@ df = pd.read_csv("Sentinel tiles.csv", header=None)
 # print(df)
 
 SenTiles = df[1:][0]
-DFtiles = SenTiles[0:1]
+DFtiles = SenTiles[0:]
 # DFtiles = df[1:]
 
 tiles = DFtiles.values.tolist()
@@ -36,7 +36,10 @@ cloudLessSize = 0
 CloudSizesYear = []
 CloudPrcYear = []
 
+n = 1
 for tile in tiles:
+    print("***** number: {}" .format(n))
+    n += 1
     print(tile)
 
     for year in range(int(year_from), int(year_to) + 1):
