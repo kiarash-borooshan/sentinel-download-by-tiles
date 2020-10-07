@@ -17,7 +17,7 @@ producttype = "S2MSI1C"
 # producttype = "S2MS2Ap"    # doesn't work
 # producttype = "S2MSI2A"    # doesn't work
 
-year_from = "2018"
+year_from = "2019"
 year_to = "2019"
 
 """ import tiles name """
@@ -152,3 +152,10 @@ for tile in tiles:
 # MyDF = pd.DataFrame(data)
 # # print(MyDF)
 # MyDF.to_csv("less cloud percent and volume .csv")
+
+toc = time.time()
+unite = "sec"
+du = toc - tic
+if du > 60:
+    unite = "min"
+print("duration {} {}" .format(du, unite))
